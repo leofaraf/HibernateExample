@@ -41,10 +41,30 @@ public class DatabaseService {
         return application;
     }
 
+    public void updateApplicationWithId(int id, Application application) {
+        Session session = factory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Application receiveApplication = session.get(Application.class, id);
+        receiveApplication.setDate(application.getDate());
+        receiveApplication.setEmail(application.getEmail());
+        receiveApplication.setStatus(application.getStatus());
+        transaction.commit();
+        session.close();
+    }
+
     public void removeApplicationWithId(int id) {
         Session session = factory.openSession();
         Transaction transaction = session.beginTransaction();
+        Application application = session.get(Application.class, id);
+        session.remove(application);
+        transaction.commit();
+        session.close();
+    }
 
+    public void removeApplication(Application application) {
+        Session session = factory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.remove(application);
         transaction.commit();
         session.close();
     }
